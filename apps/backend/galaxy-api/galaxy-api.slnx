@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="galaxy-api.AppHost/galaxy-api.AppHost.csproj" />
+  <Project Path="galaxy-api.ServiceDefaults/galaxy-api.ServiceDefaults.csproj" />
+  <Project Path="galaxy-api/galaxy-api.csproj" />
+</Solution>

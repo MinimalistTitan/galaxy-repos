@@ -1,0 +1,19 @@
+# Visual Studio / Rider
+.vs/
+.idea/
+
+# Build outputs
+bin/
+obj/
+artifacts/
+
+# User files
+*.user
+*.suo
+*.njsproj.user
+
+# Publish/profile/local secrets
+*.PublishSettings
+
+# OS / misc
+.DS_Store

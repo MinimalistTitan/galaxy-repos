@@ -1,0 +1,5 @@
+{
+  "appHost": {
+    "path": "galaxy-api.AppHost/galaxy-api.AppHost.csproj"
+  }
+}
