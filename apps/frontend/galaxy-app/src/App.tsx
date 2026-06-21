@@ -7,9 +7,9 @@ import "./App.css";
 function App() {
   const [count, setCount] = useState(0);
   const [apiMessage, setApiMessage] = useState("Loading...");
-
+  const apiBase = import.meta.env.VITE_API_BASE_URL;
   useEffect(() => {
-    fetch("/api/health")
+    fetch(`${apiBase}/api/health`)
       .then((res) => res.json())
       .then((data) =>
         setApiMessage(`Backend says: ${data.status} (${data.service})`),
