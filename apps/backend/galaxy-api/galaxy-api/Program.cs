@@ -21,7 +21,12 @@ app.UseHttpsRedirection();
 app.MapGet("/api/health", () => Results.Ok(new
 {
     status = "ok",
-    service = "galaxy-api"
+    service = "galaxy-api",
+    data = new
+    {
+        version = "1.0.0",
+        environment = app.Environment.EnvironmentName
+    }
 }));
 
 var summaries = new[]
