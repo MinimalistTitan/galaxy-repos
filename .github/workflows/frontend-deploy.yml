@@ -89,6 +89,7 @@ jobs:
           VITE_API_BASE_URL: ${{ vars.AZURE_API_BASE_URL }}
 
       - name: Deploy frontend
+        id: swa_deploy
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
@@ -98,8 +99,35 @@ jobs:
           output_location: ''
           skip_app_build: true
 
+      - name: "Debug: show AZURE_STATIC_WEB_APP_URL"
+        run: |
+          echo "AZURE_STATIC_WEB_APP_URL='${{ vars.AZURE_STATIC_WEB_APP_URL }}'"
+        shell: bash
+
+      - name: "Debug: show deployed URL"
+        run: |
+          echo ">>> static_web_app_url from action output:"
+          url="${{ steps.swa_deploy.outputs.static_web_app_url }}"
+          printf '%s\n' "$url"
+          echo "quoted repr: \"${url}\""
+          echo "len: ${#url}"
+          if [ -z "$url" ]; then
+            echo 'ERROR: static_web_app_url is empty' >&2
+            exit 2
+          fi
+          case "$url" in
+            http*) echo 'URL looks OK' ;;
+            *) echo 'ERROR: unexpected url format' >&2 ; exit 3 ;;
+          esac
+        shell: bash
+
       - name: Smoke test frontend
-        run: curl --fail --silent --show-error "${{ vars.AZURE_STATIC_WEB_APP_URL }}"
+        if: ${{ steps.swa_deploy.outputs.static_web_app_url != '' }}
+        run: |
+          url="${{ steps.swa_deploy.outputs.static_web_app_url }}"
+          echo "Smoke testing: $url"
+          curl --fail --show-error --location --max-time 30 "$url"
+        shell: bash
 
   deploy_test:
     name: Deploy frontend to test
